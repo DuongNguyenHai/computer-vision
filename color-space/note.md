@@ -1,0 +1,6 @@
+-	[OpenCV and Python Color Detection](https://www.pyimagesearch.com/2014/08/04/opencv-python-color-detection/)
+-	[VIDEO CAPTURE & SWITCHING COLORSPACES RGB / HSV](http://www.bogotobogo.com/python/OpenCV_Python/python_opencv3_Changing_ColorSpaces_RGB_HSV_HLS.php)
+-	[OpenCV: Color-spaces and splitting channels](http://rodrigoberriel.com/2014/11/opencv-color-spaces-splitting-channels/)
+-	[CAVEAT!! - Thresholding Hue Component](http://hanzratech.in/2015/02/07/caveat-thresholding-hue-component.html)
+-	[Using Python and k-means in HSV color space to find dominant colors in images](https://giusedroid.blogspot.com/2015/04/using-python-and-k-means-in-hsv-color.html)
+-	[Changing Colorspaces](http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_colorspaces/py_colorspaces.html)
