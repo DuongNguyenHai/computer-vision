@@ -57,3 +57,4 @@ cv.putText(img, '('+str(cx)+','+str(cy)+')', (cx + 20, cy), cv.FONT_HERSHEY_SIMP
 cv.imshow("center", img)
 
 cv.waitKey(0)
+cv.destroyAllWindows()
