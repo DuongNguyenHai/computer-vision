@@ -7,9 +7,21 @@ import cv2 as cv
 LEFT = UPPER = 0
 RIGHT = UNDER = 1
 
+collar_k = 15
+
 def plotContour(img, cont):
     for point in cont:
         cv.circle(img, tuple(point[0]), 2, (0, 0, 255), -1)
+
+def imShowMedium(name, img):
+    height, width = img.shape[:2]
+    if(width>1600):
+        ims = cv.resize(img, ((int)(width/3), (int)(height/3)), interpolation = cv.INTER_AREA)
+    elif(width>1000):
+        ims = cv.resize(img, ((int)(width/2), (int)(height/2)), interpolation = cv.INTER_AREA)
+    else:
+        ims = img
+    cv.imshow(name, ims)
 
 class TShirt:
     sleeveTop = []
@@ -33,7 +45,8 @@ class TShirt:
         # get 2 sleeve bottom points (left & right)
         self.sleeveBottom = self.getSleeveBottom(self.outline)
         # get 2 armhole top points (left & right)
-        self.armHoleTop = self.getArmHoleTop(self.outline)
+        # self.armHoleTop = self.getArmHoleTop(self.outline)
+        self.bodyLength = self.measureBodyLength()
 
     def getOutLineShirt(self):
         gray = cv.cvtColor(self.img, cv.COLOR_BGR2GRAY)
@@ -112,7 +125,7 @@ class TShirt:
 
     def printCenter(self, img, outline):
         cv.circle(img, self.ct, 3, (255, 255, 255), -1)
-        cv.putText(img, '('+str(self.ct[0])+','+str(self.ct[1])+')', (self.ct[0] + 20, self.ct[1]), cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+        cv.putText(img, '('+str(self.ct[0])+','+str(self.ct[1])+')', (self.ct[0] + 5, self.ct[1]), cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
         return
 
     def cutContour(self, outline, tail, head):
@@ -350,7 +363,8 @@ class TShirt:
         # cv.drawContours(self.img, [hulCutRight], -1, (0, 0, 255), 1)
         # cv.imshow('haha', self.img)
         plotContour(self.img, hulCutRight)
-        cv.imshow('haha', self.img)
+        # cv.imshow('haha', self.img)
+        imShowMedium('haha', self.img)
 
         arr = hulCutRight[:, 0]
         argXRight = argYRight = 0
@@ -367,3 +381,66 @@ class TShirt:
                     argXRight = point[0][0]
 
         return ((argXLeft, argYLeft), (argXRight, argYRight))
+
+    def measureBodyLength(self, show=False):
+        otl = self.outline[:,0].tolist()
+        idx = otl.index(list(self.collar[RIGHT]))
+        topPoint = tuple(self.outline[idx - collar_k][0])
+        botPoint = (topPoint[0], (self.bodyBottom[LEFT][1] + (self.bodyBottom[RIGHT][1]))//2)
+        return (topPoint, botPoint, botPoint[1] - topPoint[1])
+
+    def showBodyLength(self, img, point=True):
+        '''Show body length of shirt'''
+        if(point):
+            cv.circle(img, self.bodyLength[0], 4, (255, 0, 0), -1)
+            cv.circle(img, self.bodyLength[1], 4, (255, 0, 0), -1)
+        cv.line(img, self.bodyLength[0], self.bodyLength[1], (255, 0, 0), 2)
+        avgX = (self.bodyLength[0][0]+5, (self.bodyLength[0][1]+self.bodyLength[1][1])//2)
+        # cv.putText(img, str(self.bodyLength[1][1]-self.bodyLength[0][1]), avg, cv.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 1)
+        cv.putText(img, 'A', avgX, cv.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 1)
+        return
+
+    def showChestWidth(self, img, point=True):
+        '''Show chest width of shirt'''
+        if(point):
+            cv.circle(img, self.armHoleBottom[LEFT], 4, (172, 79, 166), -1)
+            cv.circle(img, self.armHoleBottom[RIGHT], 4, (172, 79, 166), -1)
+        
+        avgX = (self.armHoleBottom[LEFT][0]+self.armHoleBottom[RIGHT][0])//2
+        avgY = (self.armHoleBottom[LEFT][1]+self.armHoleBottom[RIGHT][1])//2
+        cv.line(img, (self.armHoleBottom[LEFT][0], avgY), (self.armHoleBottom[RIGHT][0], avgY), (172, 79, 166), 2)
+        # cv.putText(img, str(self.armHoleBottom[LEFT][0]-self.armHoleBottom[RIGHT][1]), txPoint, cv.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 1)
+        cv.putText(img, 'B', (avgX, avgY-5), cv.FONT_HERSHEY_SIMPLEX, 0.8, (172, 79, 166), 1)
+        return
+
+    def showSleeveHemWidth(self, img, point=True):
+        '''Show sleeve hem width of shirt'''
+        if(point):
+            cv.circle(img, self.sleeveTop[LEFT], 4, (4, 177, 220), -1)
+            cv.circle(img, self.sleeveBottom[LEFT], 4, (4, 177, 220), -1)
+            cv.circle(img, self.sleeveTop[RIGHT], 4, (4, 177, 220), -1)
+            cv.circle(img, self.sleeveBottom[RIGHT], 4, (4, 177, 220), -1)
+        cv.line(img, self.sleeveTop[LEFT], self.sleeveBottom[LEFT], (4, 177, 220), 2)
+        cv.line(img, self.sleeveTop[RIGHT], self.sleeveBottom[RIGHT], (4, 177, 220), 2)
+
+        avgXLeft = self.sleeveTop[LEFT][0] + (self.sleeveBottom[LEFT][0] - self.sleeveTop[LEFT][0])//2
+        avgYLeft = self.sleeveTop[LEFT][1] + (self.sleeveBottom[LEFT][1] - self.sleeveTop[LEFT][1])//2
+        avgXRight = self.sleeveBottom[RIGHT][0] + (self.sleeveTop[RIGHT][0] - self.sleeveBottom[RIGHT][0])//2
+        avgYRight = self.sleeveBottom[RIGHT][1] + (self.sleeveTop[RIGHT][1] - self.sleeveBottom[RIGHT][1])//2
+        cv.putText(img, 'D', (avgXLeft+5, avgYLeft), cv.FONT_HERSHEY_SIMPLEX, 0.8, (4, 177, 220), 1)
+        cv.putText(img, 'E', (avgXRight-20, avgYRight), cv.FONT_HERSHEY_SIMPLEX, 0.8, (4, 177, 220), 1)
+
+
+        return
+
+    def showHemWidth(self, img, point=True):
+        '''Show Hem width of shirt'''
+        if(point):
+            cv.circle(img, self.bodyBottom[LEFT], 4, (127, 255, 0), -1)
+            cv.circle(img, self.bodyBottom[RIGHT], 4, (127, 255, 0), -1)
+        
+        avgX = (self.bodyBottom[LEFT][0] + self.bodyBottom[RIGHT][0])//2
+        avgY = (self.bodyBottom[LEFT][1] + self.bodyBottom[RIGHT][1])//2
+        cv.line(img, (self.bodyBottom[LEFT][0], avgY), (self.bodyBottom[RIGHT][0], avgY), (127, 255, 0), 2)
+        cv.putText(img, 'C', (avgX, avgY-5), cv.FONT_HERSHEY_SIMPLEX, 0.8, (127, 255, 0), 1)
+        return
