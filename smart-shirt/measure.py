@@ -18,28 +18,12 @@ shirt.recognize()
 # box = np.int0(cv.boxPoints(rect))
 hull = cv.convexHull(shirt.outline)
 
-arr = hull[:, 0]
-lst = sorted(arr, key=lambda x: x[1], reverse=False)
-
-lt = tuple(map(tuple, lst))
-# print(lt)
 print('center: ', shirt.ct)
 print('collar: ', shirt.collar)
 print('body bottom: ', shirt.bodyBottom)
 print('sleeveTop:', shirt.sleeveTop)
 print('sleeveBottom: ', shirt.sleeveBottom)
 print('arm hole: ', shirt.armHoleBottom)
-
-# sleLT = shirt.getsleeveTop(hull)
-# sleRT = shirt.getsleeveTop(hull, side='right')
-
-# ll = shirt.outline[:,0].tolist()
-# tail = ll.index(list(sleLT))
-# head = ll.index(list(shirt.bodyBottom[0]))
-# print(tail)
-# print(head)
-# print("collar left:",ll.index(list(shirt.collar[0])))
-# print("collar right:", ll.index(list(shirt.collar[1])))
 
 # cut = shirt.cutContour(shirt.outline, tail, head+1)
 # huCut = shirt.getHull(cut)
@@ -49,7 +33,7 @@ print('arm hole: ', shirt.armHoleBottom)
 # for point in huCut:
 #     cv.circle(img, tuple(point[0]), 2, (0, 0, 255), -1)
 
-# img = cv.drawContours(img, [shirt.outline], -1, (92, 239, 29), 1)
+img = cv.drawContours(img, [shirt.outline], -1, (92, 239, 29), 1)
 # size = shirt.outline.shape[0]
 # size = size//10
 # for i in range(0, 10):
@@ -80,6 +64,7 @@ shirt.printCenter(img, shirt.outline)
 shirt.showBodyLength(img)
 shirt.showChestWidth(img)
 shirt.showSleeveHemWidth(img)
+shirt.showArmHoleLength(img)
 shirt.showHemWidth(img)
 
 height, width = img.shape[:2]
