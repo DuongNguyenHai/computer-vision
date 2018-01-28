@@ -69,7 +69,7 @@ class TShirt:
         (_, thresh) = cv.threshold(gray, 140, 255, cv.THRESH_BINARY_INV)
         cv.imshow('thresh', thresh)
 
-        (_,conts,_) = cv.findContours(thresh,cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+        (_,conts,_) = cv.findContours(thresh, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
         bigestCont = sorted(conts, key=cv.contourArea, reverse=True)[0]    
         return bigestCont
 
