@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+# https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html
+# http://felix.abecassis.me/2011/09/opencv-morphological-skeleton/
+
 import cv2 as cv
 import numpy as np
 
