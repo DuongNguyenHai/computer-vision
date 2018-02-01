@@ -142,10 +142,10 @@ class TShirt:
         cv.putText(img, '('+str(self.ct[0])+','+str(self.ct[1])+')', (self.ct[0]-35, self.ct[1]+20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
         return
 
-    def cutContour(self, outline, tail, head):
+    def cutContour(self, contour, tail, head):
         # return outline[:tail,:head]
         s = slice(tail,head,1)
-        return outline[s]
+        return contour[s]
     
     def getArmHoleBottom(self, outline):
         '''Get two arm hole points (bottom points).'''
@@ -553,4 +553,4 @@ class TShirt:
         avgY = self.armHoleLength[TOP][Y] + (self.armHoleLength[BOTTOM][Y] - self.armHoleLength[TOP][Y])//2
         cv.line(img, (self.armHoleLength[TOP][X]+2, self.armHoleLength[TOP][Y]), (self.armHoleLength[BOTTOM][X]+2, self.armHoleLength[BOTTOM][Y]), (127, 255, 0), 2)
         cv.putText(img, str(self.armHoleLength[LENGTH]), (avgX+5, avgY), cv.FONT_HERSHEY_SIMPLEX, 0.8, (127, 255, 0), 1)
-
+    
