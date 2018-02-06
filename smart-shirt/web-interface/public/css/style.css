@@ -1,0 +1,68 @@
+.beU-nav {
+    background-color: #292b2c;
+    height: 50px;
+}
+h1 {
+    color: #fff;
+    font-size: 18px;
+    line-height: 50px;
+}
+.main-body {
+    margin-top: 50px;
+}
+.camera-box {
+    width: 100%;
+    height: 550px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* background-image: url("../resource/images/bt.png"); */
+}
+.act-measure {
+    margin-top: 20px;
+    text-align: center;
+}
+.act-measure .btn {
+    border-radius: 0px;
+    padding-left: 40px;
+    padding-right: 40px;
+    cursor: pointer;
+}
+.tab-content {
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 20px;
+}
+.tab-pane {
+    /* height: 550px; */
+    /* overflow: scroll; */
+}
+.measurement-table {
+    width: 100%;
+}
+.measurement-table tr {
+    border-bottom: 1px solid #ddd;
+}
+.measurement-table tr:last-child {
+    border-bottom: none;
+}
+.measurement-table thead th {
+    padding: 6px 5px;
+    font-size: 14px;
+}
+.measurement-table thead th{
+    color: rgba(0,0,0,.54);
+}
+.measurement-table tbody td{
+    padding: 1px 5px;
+    font-size: 13px;
+    text-align: center;
+}
+.measurement-table td:first-child {
+    text-align: left;
+}
