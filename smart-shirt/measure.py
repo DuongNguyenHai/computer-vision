@@ -22,40 +22,40 @@ def createSocket():
     return sok
     
 def measureTShirt():
-    shirt = Tshirt.TShirt('images/shirt17.jpg')
+    shirt = Tshirt.TShirt('uploads/shirt.jpg')
     # auto detect all spcecial points of t-shirt
     shirt.recognize()
-    # hull = cv.convexHull(shirt.outline)
+    hull = cv.convexHull(shirt.outline)
 
-    # print('center: ', shirt.ct)
-    # print('collar: ', shirt.collar)
-    # print('body bottom: ', shirt.bodyBottom)
-    # print('sleeveTop:', shirt.sleeveTop)
-    # print('sleeveBottom: ', shirt.sleeveBottom)
-    # print('arm hole: ', shirt.armHoleBottom)
+    print('center: ', shirt.ct)
+    print('collar: ', shirt.collar)
+    print('body bottom: ', shirt.bodyBottom)
+    print('sleeveTop:', shirt.sleeveTop)
+    print('sleeveBottom: ', shirt.sleeveBottom)
+    print('arm hole: ', shirt.armHoleBottom)
 
-    # img = cv.imread('images/shirt17.jpg')
-    # cv.drawContours(img, [shirt.outline], -1, (92, 239, 29), 1)
+    img = cv.imread('uploads/shirt.jpg')
+    cv.drawContours(img, [shirt.outline], -1, (92, 239, 29), 1)
 
     # draw point
 
-    # cv.circle(img, shirt.collar[0], 4, (255, 0, 0), -1)
-    # cv.circle(img, shirt.collar[1], 4, (255, 0, 0), -1)
+    cv.circle(img, shirt.collar[0], 4, (255, 0, 0), -1)
+    cv.circle(img, shirt.collar[1], 4, (255, 0, 0), -1)
 
     # show center of shirt
 
-    # shirt.printCenter(img, shirt.outline)
+    shirt.printCenter(img, shirt.outline)
 
     # show measurement
 
-    # shirt.showBodyLength(img)
-    # shirt.showChestWidth(img)
-    # shirt.showSleeveHemWidth(img)
-    # shirt.showArmHoleLength(img)
-    # shirt.showHemWidth(img)
-    # cv.imshow('image', img)
-    # cv.waitKey(0)
-    # cv.destroyAllWindows()
+    shirt.showBodyLength(img)
+    shirt.showChestWidth(img)
+    shirt.showSleeveHemWidth(img)
+    shirt.showArmHoleLength(img)
+    shirt.showHemWidth(img)
+    cv.imshow('image', img)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
     return shirt.returnPoints()
 
 def main():

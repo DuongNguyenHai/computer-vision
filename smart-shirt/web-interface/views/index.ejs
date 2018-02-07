@@ -7,11 +7,14 @@
     <title>Test</title>
 
     <!-- JS -->
-    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script> -->
     <script type="text/javascript" src="script/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="script/jquery/jquery.js"></script>
     <script type="text/javascript" src="script/jquery/jquery-ui.min.js"></script>
-    <!-- <script type="text/javascript" src="script/bootstrap/bootstrap.min.js"></script> -->
+    <!-- bootstrap script -->
+    <script type="text/javascript" src="script/bootstrap/tether.min.js"></script> 
+    <script type="text/javascript" src="script/bootstrap/bootstrap.min.js"></script>
+
+    <!-- my script -->
     <script type="text/javascript" src="script/script.js"></script>
 
     <!-- Font -->
@@ -58,12 +61,22 @@
                     <div class="user-action">
                         <div class="act-select-cam-img">
                             <button class="act-select choose-camera selected">Camera</button>
-                            <input type="file" id="fileInput" name="file" />
-                            <label for="fileInput" class="act-select choose-img">Choose image</label>
+                            <input type="file" id="upload-input" name="img" />
+                            <label for="upload-input" class="act-select choose-img">Choose image</label>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar"></div>
+                            </div>
+                            
+                            <!-- <form ref='uploadForm' id='uploadForm' action='http://localhost:3000/upload' method='post' encType="multipart/form-data">
+                                <input type="file" id="fileInput" name="img" />
+                                <label for="fileInput" class="act-select choose-img">Choose image</label>
+                                <input type='submit' value='Upload!' />
+                            </form> -->
                         </div>
                         <div class="act-measure">
                             <button type="button" class="btn btn-primary action" action="measure">Measure</button>
                         </div>
+                         
                     </div>
                 </div> 
             </div>

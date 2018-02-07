@@ -81,7 +81,7 @@ class TShirt:
         gray = cv.cvtColor(self.img, cv.COLOR_BGR2GRAY)
         # cv.imshow('gray', gray)
         # thresh = cv.adaptiveThreshold(gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 127, 1)
-        (_, thresh) = cv.threshold(gray, 220, 255, cv.THRESH_BINARY_INV)
+        (_, thresh) = cv.threshold(gray, 140, 255, cv.THRESH_BINARY_INV)
         cv.imshow('thresh', thresh)
 
         (_,conts,_) = cv.findContours(thresh, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)

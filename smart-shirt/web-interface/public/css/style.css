@@ -37,7 +37,7 @@ h1 {
     background-size: contain;
     background-position: center;
 }
-#fileInput {
+#upload-input {
     display: none;
 }
 .act-select-cam-img {
