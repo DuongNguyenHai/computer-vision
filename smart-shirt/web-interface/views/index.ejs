@@ -7,6 +7,8 @@
     <title>Test</title>
 
     <!-- JS -->
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script> -->
+    <script type="text/javascript" src="script/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="script/jquery/jquery.js"></script>
     <script type="text/javascript" src="script/jquery/jquery-ui.min.js"></script>
     <!-- <script type="text/javascript" src="script/bootstrap/bootstrap.min.js"></script> -->
@@ -35,7 +37,7 @@
         <div class="col-xs-12">
             <div class="nav-header">
                 <div class="nav-tiltle">
-                    <h1>Smart-shirt project</h1>
+                    <h1>Shirt Measurement</h1>
                 </div>
             </div>
         </div>
@@ -45,210 +47,217 @@
 <section class="main-body">
     <div class="container">
         <div class="row">
-                <div class="col-md-7">
-                        <div class="camera">
-                            <div class="camera-box">
-                                <div class="camera-content">
-                                    <img src="resource/images/shirt18.jpg" alt="">
-                                </div>
-                            </div>
-                            <div class="action">
-                                <div class="act-measure">
-                                    <button type="button" class="btn btn-primary">Measure</button>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                    <aside class="col-md-5">
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#measurement">Measurement</a>
-                            </li>
-                            <li class="nav-item">
-                                    <a class="nav-link" href="#training">Training</a>
-                                </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#setup">Setup</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div id="measurement" class="tab-pane in active">
-                                <table class="measurement-table">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Distance (cm)</th>
-                                            <th>Show</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="bodyLength">Body Length</td>
-                                            <td class="tb-property-value" length="bodyLength">123</td>
-                                            <td >
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="chestWidth">Chest Width</td>
-                                            <td class="tb-property-value" length="chestWidth">68</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="shoulderWidth">Shoulder Width</td>
-                                            <td class="tb-property-value" length="shoulderWidth">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="sleeveLength">Sleeve Length</td>
-                                            <td class="tb-property-value" length="sleeveLength">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="armHole">Arm hole</td>
-                                            <td class="tb-property-value" length="armHole">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="sleeveWidth">Sleeve Width</td>
-                                            <td class="tb-property-value" length="sleeveWidth">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="sleeveHemWidth">Sleeve Hem Width</td>
-                                            <td class="tb-property-value" length="sleeveHemWidth">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="sleeveHemFromWidth">Sleeve Hem From Width</td>
-                                            <td class="tb-property-value" length="sleeveHemFromWidth">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="hemWidth">Hem Width</td>
-                                            <td class="tb-property-value" length="hemWidth">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="hemFromStitch">Hem From Stitch</td>
-                                            <td class="tb-property-value" length="hemWidth">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="neckWidth">Neck Width</td>
-                                            <td class="tb-property-value" length="neckWidth">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="frontNeckDepth">Front Neck Depth</td>
-                                            <td class="tb-property-value" length="frontNeckDepth">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="backNeckDepth">Back Neck Depth</td>
-                                            <td class="tb-property-value" length="backNeckDepth">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="collarWidth">Collar Depth</td>
-                                            <td class="tb-property-value" length="collarWidth">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr class="propObject">
-                                            <td class="tb-property-name" id="neckToSleeve">Neck To Sleeve</td>
-                                            <td class="tb-property-value" length="neckToSleeve">80</td>
-                                            <td>
-                                                <label class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input">
-                                                <span class="custom-control-indicator"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- <div id="setup" class="tab-pane fade">
-                                <h3>Menu 1</h3>
-                                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                            </div>
-                            <div id="training" class="tab-pane fade">
-                                <h3>Menu 2</h3>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-                            </div> -->
+            <div class="col-md-7">
+                <div class="camera">
+                    <div class="camera-box">
+                        <div class="camera-content">
+                            <!-- <img id="imageSrc" src="resource/images/shirt18.jpg" alt=""> -->
+                            <div id="imageSrc"></div>
                         </div>
-                    </aside>
-        </div>
-        
+                    </div>
+                    <div class="user-action">
+                        <div class="act-select-cam-img">
+                            <button class="act-select choose-camera selected">Camera</button>
+                            <input type="file" id="fileInput" name="file" />
+                            <label for="fileInput" class="act-select choose-img">Choose image</label>
+                        </div>
+                        <div class="act-measure">
+                            <button type="button" class="btn btn-primary action" action="measure">Measure</button>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <aside class="col-md-5">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#measurement">Measurement</a>
+                    </li>
+                    <li class="nav-item">
+                            <a class="nav-link" href="#training">Training</a>
+                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#setup">Setup</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="measurement" class="tab-pane in active">
+                        <table class="measurement-table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Distance (cm)</th>
+                                    <th>Show</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="propObject">
+                                    <td class="tb-property-name" id="bodyLength">Body Length</td>
+                                    <td class="tb-property-value" length="bodyLength">NaN</td>
+                                    <td >
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="propObject">
+                                    <td class="tb-property-name" id="chestWidth">Chest Width</td>
+                                    <td class="tb-property-value" length="chestWidth">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <!-- <tr class="propObject">
+                                    <td class="tb-property-name" id="shoulderWidth">Shoulder Width</td>
+                                    <td class="tb-property-value" length="shoulderWidth">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr> -->
+                                <!-- <tr class="propObject">
+                                    <td class="tb-property-name" id="sleeveLength">Sleeve Length</td>
+                                    <td class="tb-property-value" length="sleeveLength">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr> -->
+                                <tr class="propObject">
+                                    <td class="tb-property-name" id="armHole">Arm hole</td>
+                                    <td class="tb-property-value" length="armHoleLength">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <!-- <tr class="propObject">
+                                    <td class="tb-property-name" id="sleeveWidth">Sleeve Width</td>
+                                    <td class="tb-property-value" length="sleeveWidth">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr> -->
+                                <tr class="propObject">
+                                    <td class="tb-property-name" id="sleeveHemWidth">Sleeve Hem Width</td>
+                                    <td class="tb-property-value" length="sleeveHemWidth">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <!-- <tr class="propObject">
+                                    <td class="tb-property-name" id="sleeveHemFromWidth">Sleeve Hem From Width</td>
+                                    <td class="tb-property-value" length="sleeveHemFromWidth">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr> -->
+                                <tr class="propObject">
+                                    <td class="tb-property-name" id="hemWidth">Hem Width</td>
+                                    <td class="tb-property-value" length="hemWidth">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <!-- <tr class="propObject">
+                                    <td class="tb-property-name" id="hemFromStitch">Hem From Stitch</td>
+                                    <td class="tb-property-value" length="hemFromStitch">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="propObject">
+                                    <td class="tb-property-name" id="neckWidth">Neck Width</td>
+                                    <td class="tb-property-value" length="neckWidth">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="propObject">
+                                    <td class="tb-property-name" id="frontNeckDepth">Front Neck Depth</td>
+                                    <td class="tb-property-value" length="frontNeckDepth">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="propObject">
+                                    <td class="tb-property-name" id="backNeckDepth">Back Neck Depth</td>
+                                    <td class="tb-property-value" length="backNeckDepth">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="propObject">
+                                    <td class="tb-property-name" id="collarWidth">Collar Depth</td>
+                                    <td class="tb-property-value" length="collarWidth">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="propObject">
+                                    <td class="tb-property-name" id="neckToSleeve">Neck To Sleeve</td>
+                                    <td class="tb-property-value" length="neckToSleeve">NaN</td>
+                                    <td>
+                                        <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input">
+                                        <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- <div id="setup" class="tab-pane fade">
+                        <h3>Menu 1</h3>
+                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    </div>
+                    <div id="training" class="tab-pane fade">
+                        <h3>Menu 2</h3>
+                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                    </div> -->
+                </div>
+            </aside>
+        </div>  
     </div>
 </section>
+<!-- <script>
 
+</script> -->
 </body>
 </html>

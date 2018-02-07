@@ -1,3 +1,6 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
 .beU-nav {
     background-color: #292b2c;
     height: 50px;
@@ -21,11 +24,63 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* background-image: url("../resource/images/bt.png"); */
+}
+.camera-content {
+    width: 100%;
+    height: 100%;
+}
+#imageSrc {
+    width: 100%;
+    height: 100%;
+    background-image: url("../resource/images/shirt15.jpg");
+    background-repeat:no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+#fileInput {
+    display: none;
+}
+.act-select-cam-img {
+    overflow: hidden;
+    float: left;
+}
+.act-select {
+    float: left;
+    background: #ddd;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    border-radius: 0;
+    color: #292B2D;
+    font-weight: 400;
+}
+.act-select:not(.selected):hover {
+    border-color: #adadad;
+}
+.act-select.selected {
+    background-color: #5cb85c;
+    color: #fff;
+}
+.camera-box img {
+    max-width: 100%;
+    max-height: 100%;
+    /* object-fit: contain; */
+    object-fit: scale-down;
+}
+.user-action {
+    margin-top: 20px;
 }
 .act-measure {
-    margin-top: 20px;
     text-align: center;
+    float: right;
 }
 .act-measure .btn {
     border-radius: 0px;
@@ -37,10 +92,6 @@ h1 {
     border: 1px solid #ddd;
     border-top: none;
     padding: 20px;
-}
-.tab-pane {
-    /* height: 550px; */
-    /* overflow: scroll; */
 }
 .measurement-table {
     width: 100%;

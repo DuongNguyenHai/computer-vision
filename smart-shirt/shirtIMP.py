@@ -4,6 +4,7 @@ import argparse
 import numpy as np
 import cv2 as cv
 import math
+import json
 
 X = LEFT = UPPER = TOP = 0
 Y = RIGHT = UNDER = BOTTOM = 1
@@ -23,6 +24,9 @@ def imShowMedium(name, img):
     else:
         ims = img
     cv.imshow(name, ims)
+
+def jsonDefault(object):
+    return object.__dict__
 
 class TShirt:
     '''Class include detect all special points of shirt and calculate all measurement'''
@@ -62,11 +66,22 @@ class TShirt:
         self.measureHemWitdh()
         self.measureArmHoleLength()
 
+    def returnPoints(self):
+        data = {
+            'bodyLength': self.convertDumps(self.bodyLength),
+            'hemWidth': self.convertDumps(self.hemWidth),
+            'chestWidth': self.convertDumps(self.chestWidth),
+            'armHoleLength': self.convertDumps(self.armHoleLength),
+            'sleeveHemWidth': self.convertDumps(self.sleeveHemWidthLeft)
+        }
+        # json_str = json.dumps(data)
+        return data
+
     def getOutLineShirt(self):
         gray = cv.cvtColor(self.img, cv.COLOR_BGR2GRAY)
         # cv.imshow('gray', gray)
         # thresh = cv.adaptiveThreshold(gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 127, 1)
-        (_, thresh) = cv.threshold(gray, 140, 255, cv.THRESH_BINARY_INV)
+        (_, thresh) = cv.threshold(gray, 220, 255, cv.THRESH_BINARY_INV)
         cv.imshow('thresh', thresh)
 
         (_,conts,_) = cv.findContours(thresh, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
@@ -485,12 +500,12 @@ class TShirt:
         '''Measure sleeve hem width'''
         self.sleeveHemWidthLeft.append(self.sleeveTop[LEFT])
         self.sleeveHemWidthLeft.append(self.sleeveBottom[LEFT])
-        length1 = (int)(math.sqrt((self.sleeveHemWidthLeft[TOP][X]-self.sleeveHemWidthLeft[BOTTOM][X])**2 + (self.sleeveHemWidthLeft[BOTTOM][Y]-self.sleeveHemWidthLeft[TOP][Y])**2) + 0.5) # if wanna convert to nearest int number, plus with 0.5
+        length1 = (np.int32)(math.sqrt((self.sleeveHemWidthLeft[TOP][X]-self.sleeveHemWidthLeft[BOTTOM][X])**2 + (self.sleeveHemWidthLeft[BOTTOM][Y]-self.sleeveHemWidthLeft[TOP][Y])**2) + 0.5) # if wanna convert to nearest int number, plus with 0.5
         self.sleeveHemWidthLeft.append(length1)
         
         self.sleeveHemWidthRight.append(self.sleeveTop[RIGHT])
         self.sleeveHemWidthRight.append(self.sleeveBottom[RIGHT])
-        length2 = (int)(math.sqrt((self.sleeveHemWidthRight[TOP][X]-self.sleeveHemWidthRight[BOTTOM][X])**2 + (self.sleeveHemWidthRight[BOTTOM][Y]-self.sleeveHemWidthRight[TOP][Y])**2) +0.5) # if wanna convert to nearest int number, plus with 0.5
+        length2 = (np.int32)(math.sqrt((self.sleeveHemWidthRight[TOP][X]-self.sleeveHemWidthRight[BOTTOM][X])**2 + (self.sleeveHemWidthRight[BOTTOM][Y]-self.sleeveHemWidthRight[TOP][Y])**2) +0.5) # if wanna convert to nearest int number, plus with 0.5
         self.sleeveHemWidthRight.append(length2)
 
         return self.sleeveHemWidthLeft, self.sleeveHemWidthRight
@@ -554,3 +569,9 @@ class TShirt:
         cv.line(img, (self.armHoleLength[TOP][X]+2, self.armHoleLength[TOP][Y]), (self.armHoleLength[BOTTOM][X]+2, self.armHoleLength[BOTTOM][Y]), (127, 255, 0), 2)
         cv.putText(img, str(self.armHoleLength[LENGTH]), (avgX+5, avgY), cv.FONT_HERSHEY_SIMPLEX, 0.8, (127, 255, 0), 1)
     
+    def convertDumps(self, ls):
+        return [
+                [np.asscalar(ls[0][0]), np.asscalar(ls[0][1])],
+                [np.asscalar(ls[1][0]), np.asscalar(ls[1][1])],
+                np.asscalar(ls[2])
+            ]

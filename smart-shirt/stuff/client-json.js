@@ -33,7 +33,7 @@ stdin.addListener("data", function(d) {
                 'message': str
             };
     ss = JSON.stringify(s)
-    console.log(ss)
+    console.log(ss);
     client.write(ss);
     process.stdout.write("message: ");
 });

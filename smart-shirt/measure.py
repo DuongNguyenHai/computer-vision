@@ -1,113 +1,86 @@
 #!/usr/bin/python3
+import socket
+import sys
+import json
 import argparse
 import numpy as np
 import cv2 as cv
 import shirtIMP as Tshirt
 
-ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", required = True, help = "path to the image file")
-args = vars(ap.parse_args())
+def createSocket():
+    HOST = ''   # Symbolic name, meaning all available interfaces
+    PORT = 8888 # Arbitrary non-privileged port
+    sok = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #Bind socket to local host and port
+    try:
+        sok.bind((HOST, PORT))
+    except socket.error:
+        print("Bind failed. Error Code : ")
+        sys.exit()
+    #Start listening on socket
+    sok.listen(10)
+    return sok
+    
+def measureTShirt():
+    shirt = Tshirt.TShirt('images/shirt17.jpg')
+    # auto detect all spcecial points of t-shirt
+    shirt.recognize()
+    # hull = cv.convexHull(shirt.outline)
 
-img = cv.imread(args["image"])
+    # print('center: ', shirt.ct)
+    # print('collar: ', shirt.collar)
+    # print('body bottom: ', shirt.bodyBottom)
+    # print('sleeveTop:', shirt.sleeveTop)
+    # print('sleeveBottom: ', shirt.sleeveBottom)
+    # print('arm hole: ', shirt.armHoleBottom)
 
-shirt = Tshirt.TShirt(args["image"])
+    # img = cv.imread('images/shirt17.jpg')
+    # cv.drawContours(img, [shirt.outline], -1, (92, 239, 29), 1)
 
-# auto detect all spcecial points of t-shirt
-shirt.recognize()
-# rect = cv.minAreaRect(outline)
-# box = np.int0(cv.boxPoints(rect))
-hull = cv.convexHull(shirt.outline)
+    # draw point
 
-print('center: ', shirt.ct)
-print('collar: ', shirt.collar)
-print('body bottom: ', shirt.bodyBottom)
-print('sleeveTop:', shirt.sleeveTop)
-print('sleeveBottom: ', shirt.sleeveBottom)
-print('arm hole: ', shirt.armHoleBottom)
+    # cv.circle(img, shirt.collar[0], 4, (255, 0, 0), -1)
+    # cv.circle(img, shirt.collar[1], 4, (255, 0, 0), -1)
 
-# cut = shirt.cutContour(shirt.outline, tail, head+1)
-# huCut = shirt.getHull(cut)
+    # show center of shirt
 
-# img = cv.drawCo
-# ntours(img, [huCut], -1, (255,0,255), 1)
-# print(tuple(map(tuple,huCut[:,0])))
-# for point in huCut:
-#     cv.circle(img, tuple(point[0]), 2, (0, 0, 255), -1)
+    # shirt.printCenter(img, shirt.outline)
 
+    # show measurement
 
-# HEM FROM STITCH study
-print(shirt.bodyBottom[Tshirt.LEFT], shirt.bodyBottom[Tshirt.RIGHT])
-y = shirt.bodyBottom[Tshirt.LEFT][Tshirt.Y] if shirt.bodyBottom[Tshirt.LEFT][Tshirt.Y] > shirt.bodyBottom[Tshirt.RIGHT][Tshirt.Y] else shirt.bodyBottom[Tshirt.RIGHT][Tshirt.Y]
-x = shirt.bodyBottom[Tshirt.LEFT][Tshirt.X]
-x2 = shirt.bodyBottom[Tshirt.RIGHT][Tshirt.X]
-print(x, y)
-imcrop = img[y-30:y, shirt.ct[Tshirt.X]-80:shirt.ct[Tshirt.X]+80]
-cv.imshow("cropp", imcrop)
-imcropGray = cv.cvtColor(imcrop, cv.COLOR_BGR2GRAY)
+    # shirt.showBodyLength(img)
+    # shirt.showChestWidth(img)
+    # shirt.showSleeveHemWidth(img)
+    # shirt.showArmHoleLength(img)
+    # shirt.showHemWidth(img)
+    # cv.imshow('image', img)
+    # cv.waitKey(0)
+    # cv.destroyAllWindows()
+    return shirt.returnPoints()
 
-# print(imcropGray)
-minV = imcropGray[...,0].min()
-maxV = imcropGray[...,0].max()
-_,imth = cv.threshold(imcropGray, minV, 255, cv.THRESH_BINARY_INV)
-# kernel = np.ones((1,1), np.uint8)
-kernel = np.ones((2,2), np.uint8)
-dilation = cv.dilate(imth, kernel, iterations=3)
-erosion = cv.erode(dilation, kernel, iterations = 3)
-# blimth = cv.GaussianBlur(imth, (11,1), 0)
-# _,imth = cv.threshold(blimth, 10, 255, cv.THRESH_BINARY)
-# cv.imshow('crop', blimth)
-# (_,conts,_) = cv.findContours(dilation, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
-# print(conts)
-# cv.drawContours(dilation, conts, -1, (92, 239, 29), 1)
-cv.imshow('imth', imth)
-cv.imshow('crop', erosion)
-# cutBot = shirt.cutContour(shirt.outline, shirt.bodyBottom[Tshirt.LEFT], shirt.bodyBottom[Tshirt.RIGHT])
-# cv.drawContour(img, [cutBot], -1, (100,100,1000), 1)
+def main():
+    sock = createSocket()
+    while True:
+        conn, addr = sock.accept()
+        print ("Connected with " + addr[0] + ':' + str(addr[1]))
+        while True:
+            data = conn.recv(1024)
+            if data:
+                ss = data.decode()
+                parsed_json = json.loads(ss)
+                act = parsed_json['action']
+                # Do request action
+                # Load t-shirt img from specify folder and measure size of it, respond it to nodejs
+                if(act=='measure'):
+                    dct = measureTShirt()
+                    dct['type'] = 'measurement'
+                    dataStr = json.dumps(dct)
+                    print("respond points of shirt: ", dataStr)
+                    conn.send(dataStr.encode())
+            else:
+                print("client is closed")
+                break
 
-cv.drawContours(img, [shirt.outline], -1, (92, 239, 29), 1)
-# size = shirt.outline.shape[0]
-# size = size//10
-# for i in range(0, 10):
-#     point = tuple(shirt.outline[i*size][0])
-#     cv.circle(img, point, 4, (0, 140, 247), -1)
-#     cv.putText(img, str(i), (point[0]+5, point[1]+20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 140, 247), 1)
+if __name__ == "__main__":
+    main()
 
-# img = cv.drawContours(img, [box], -1, (0,255,0), 1)
-# img = cv.drawContours(img, [shirt.hull], -1, (255,0,255), 1)
-
-# draw point
-cv.circle(img, shirt.collar[0], 4, (255, 0, 0), -1)
-cv.circle(img, shirt.collar[1], 4, (255, 0, 0), -1)
-# cv.circle(img, shirt.sleeveTop[0], 4, (0, 255, 0), -1)
-# cv.circle(img, shirt.sleeveTop[1], 4, (0, 255, 0), -1)
-# cv.circle(img, shirt.sleeveBottom[0], 4, (0, 255, 0), -1)
-# cv.circle(img, shirt.sleeveBottom[1], 4, (0, 255, 0), -1)
-# cv.circle(img, shirt.bodyBottom[0], 4, (127, 255, 0), -1)
-# cv.circle(img, shirt.bodyBottom[1], 4, (127, 255, 0), -1)
-# cv.circle(img, shirt.armHoleBottom[Tshirt.LEFT], 4, (172, 79, 166), -1)
-# cv.circle(img, shirt.armHoleBottom[Tshirt.RIGHT], 4, (172, 79, 166), -1)
-
-# img = cv.drawContours(img, [cut], -1, (0,255,0), 1)
-# img = cv.drawContours(img, [huCut], -1, (0, 0, 255), 1)
-
-# show center of shirt
-shirt.printCenter(img, shirt.outline)
-# show measurement
-shirt.showBodyLength(img)
-shirt.showChestWidth(img)
-shirt.showSleeveHemWidth(img)
-shirt.showArmHoleLength(img)
-shirt.showHemWidth(img)
-
-height, width = img.shape[:2]
-if(width>1600):
-    ims = cv.resize(img, ((int)(width/3), (int)(height/3)), interpolation = cv.INTER_AREA)
-elif(width>1000):
-    ims = cv.resize(img, ((int)(width/2), (int)(height/2)), interpolation = cv.INTER_AREA)
-else:
-    ims = img
-
-cv.imshow('image', ims)
-
-cv.waitKey(0)
-cv.destroyAllWindows()
