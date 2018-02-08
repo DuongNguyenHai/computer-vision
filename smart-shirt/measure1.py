@@ -22,6 +22,8 @@ print('body bottom: ', shirt.bodyBottom)
 print('sleeveTop:', shirt.sleeveTop)
 print('sleeveBottom: ', shirt.sleeveBottom)
 print('arm hole: ', shirt.armHoleBottom)
+print('shoulderPoint: ', shirt.shoulderPoint)
+print('sleeveLength: ', shirt.sleeveLength)
 cv.drawContours(img, [shirt.outline], -1, (92, 239, 29), 1)
 
 # draw point
@@ -35,10 +37,12 @@ cv.circle(img, shirt.collar[1], 4, (255, 0, 0), -1)
 # cv.circle(img, shirt.bodyBottom[1], 4, (127, 255, 0), -1)
 # cv.circle(img, shirt.armHoleBottom[Tshirt.LEFT], 4, (172, 79, 166), -1)
 # cv.circle(img, shirt.armHoleBottom[Tshirt.RIGHT], 4, (172, 79, 166), -1)
+cv.circle(img, tuple(shirt.shoulderPoint[Tshirt.LEFT]), 8, (172, 79, 166), -1)
+cv.circle(img, tuple(shirt.shoulderPoint[Tshirt.RIGHT]), 8, (172, 79, 166), -1)
 
 # img = cv.drawContours(img, [cut], -1, (0,255,0), 1)
-# img = cv.drawContours(img, [huCut], -1, (0, 0, 255), 1)
-
+img = cv.drawContours(img, [hull], -1, (0, 0, 255), 1)
+Tshirt.plotContour(img,hull)
 # show center of shirt
 shirt.printCenter(img, shirt.outline)
 # show measurement

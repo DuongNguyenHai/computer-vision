@@ -28,14 +28,34 @@ h1 {
 .camera-content {
     width: 100%;
     height: 100%;
+    text-align: center;
+}
+.boundary {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    /* height: 100%; */
 }
 #imageSrc {
+    display: block;
+    /* height: 100%; */
+    /* width: auto; */
+    margin-left: auto;
+    margin-right: auto;
+    visibility: hidden;
+}
+/* #imageSrc {
     width: 100%;
     height: 100%;
-    background-image: url("../resource/images/shirt15.jpg");
+    background-image: url("../../resource/images/shirt15.jpg");
     background-repeat:no-repeat;
     background-size: contain;
     background-position: center;
+} */
+#canvasOutput {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 #upload-input {
     display: none;
@@ -87,6 +107,9 @@ h1 {
     padding-left: 40px;
     padding-right: 40px;
     cursor: pointer;
+}
+.progress {
+    display: none;
 }
 .tab-content {
     border: 1px solid #ddd;

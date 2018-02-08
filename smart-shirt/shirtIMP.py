@@ -30,20 +30,22 @@ def jsonDefault(object):
 
 class TShirt:
     '''Class include detect all special points of shirt and calculate all measurement'''
-    sleeveTop = []
-    bodyLength = []
-    hemWidth = []
-    chestWidth = []
-    sleeveHemWidthLeft = []
-    sleeveHemWidthRight = []
-    armHoleLength = []
-    collarWidth = []
-
+    
     def __init__(self, fileName):
         self.imgPath = fileName
         # load the image and convert it to grayscale
         self.img = cv.imread(self.imgPath)
         # cv.imshow('original', img)
+        self.sleeveTop = []
+        self.bodyLength = []
+        self.hemWidth = []
+        self.chestWidth = []
+        self.sleeveHemWidthLeft = []
+        self.sleeveHemWidthRight = []
+        self.armHoleLength = []
+        self.collarWidth = []
+        self.shoulderWidth = []
+        self.sleeveLength = []
 
     def recognize(self):
         # all get point function need call in order
@@ -60,11 +62,15 @@ class TShirt:
         self.sleeveBottom = self.getSleeveBottom(self.outline)
         # get 2 armhole top points (left & right)
         # self.armHoleTop = self.getArmHoleTop(self.outline)
+        # get shoulder point
+        self.shoulderPoint = self.getShoulderPoint(self.hull)
         self.measureBodyLength()
         self.measureChestWidth()
         self.measureSleeveHemWidth()
         self.measureHemWitdh()
         self.measureArmHoleLength()
+        self.measureShoulderWidth()
+        self.measureSleeveLength()
 
     def returnPoints(self):
         data = {
@@ -72,7 +78,9 @@ class TShirt:
             'hemWidth': self.convertDumps(self.hemWidth),
             'chestWidth': self.convertDumps(self.chestWidth),
             'armHoleLength': self.convertDumps(self.armHoleLength),
-            'sleeveHemWidth': self.convertDumps(self.sleeveHemWidthLeft)
+            'sleeveHemWidth': self.convertDumps(self.sleeveHemWidthLeft),
+            'shoulderWidth': self.convertDumps(self.shoulderWidth),
+            'sleeveLength': self.convertDumps(self.sleeveLength)
         }
         # json_str = json.dumps(data)
         return data
@@ -81,9 +89,9 @@ class TShirt:
         gray = cv.cvtColor(self.img, cv.COLOR_BGR2GRAY)
         # cv.imshow('gray', gray)
         # thresh = cv.adaptiveThreshold(gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 127, 1)
-        (_, thresh) = cv.threshold(gray, 140, 255, cv.THRESH_BINARY_INV)
+        (_, thresh) = cv.threshold(gray, 140, 255, cv.THRESH_BINARY)
         cv.imshow('thresh', thresh)
-
+        # cv.waitKey(0)
         (_,conts,_) = cv.findContours(thresh, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
         bigestCont = sorted(conts, key=cv.contourArea, reverse=True)[0]    
         return bigestCont
@@ -390,9 +398,8 @@ class TShirt:
             cutLeft = self.cutContour(self.outline, tail, head + 1)
             hulCutLeft = self.getHull(cutLeft)
 
-            cv.drawContours(self.img, [hulCutLeft], -1, (0, 0, 255), 1)
-            cv.imshow('haha', self.img)
-            plotContour(self.img, hulCutLeft)
+            # cv.drawContours(self.img, [hulCutLeft], -1, (0, 0, 255), 1)
+            # plotContour(self.img, hulCutLeft)
 
             arr = hulCutLeft[:, 0]
             argXLeft = argYLeft = 0
@@ -426,9 +433,9 @@ class TShirt:
 
             # cv.drawContours(self.img, [hulCutRight], -1, (0, 0, 255), 1)
             # cv.imshow('haha', self.img)
-            plotContour(self.img, hulCutRight)
+            # plotContour(self.img, hulCutRight)
             # cv.imshow('haha', self.img)
-            imShowMedium('haha', self.img)
+            # imShowMedium('haha', self.img)
 
             arr = hulCutRight[:, 0]
             argXRight = argYRight = 0
@@ -537,6 +544,39 @@ class TShirt:
         length = abs(self.hemWidth[RIGHT][X] - self.hemWidth[LEFT][X])
         self.hemWidth.append(length)
         return self.hemWidth
+
+    def getShoulderPoint(self, hull):
+        pointLeft = [0,0]
+        pointRight = [0,0]
+
+        avgLeftX = self.sleeveTop[LEFT][X] + ((np.int32))((self.collar[LEFT][X] - self.sleeveTop[LEFT][X])/2 + 0.5)
+        minLeftX = 0
+        avgRightX = self.collar[RIGHT][X] + ((np.int32))((self.sleeveTop[RIGHT][X] - self.collar[RIGHT][X])/2 + 0.5)
+        minRightX = 0
+
+        for point in hull:
+            if( (self.sleeveTop[LEFT][X]<point[0][X]) & (point[0][X]<self.collar[LEFT][X]) & (self.collar[LEFT][Y]<point[0][Y]) & (point[0][Y]<self.sleeveTop[LEFT][Y]) ):
+                if( abs(point[0][X]-avgLeftX)<abs(minLeftX-avgLeftX)):
+                    minLeftX = point[0][X]
+                    minLeftY = point[0][Y]
+            elif ((self.collar[RIGHT][X]<point[0][X]) & (point[0][X]<self.sleeveTop[RIGHT][X]) & (self.collar[RIGHT][Y]<point[0][Y]) & (point[0][Y]<self.sleeveTop[RIGHT][Y]) ):
+                if( abs(point[0][X]-avgLeftX)<abs(minRightX-avgRightX)):
+                    minRightX = point[0][X]
+                    minRightY = point[0][Y]
+
+        return [[minLeftX, minLeftY], [minRightX,minRightY]]
+
+    def measureShoulderWidth(self):
+        self.shoulderWidth.append(self.shoulderPoint[LEFT])
+        self.shoulderWidth.append(self.shoulderPoint[RIGHT])
+        length = self.shoulderWidth[RIGHT][X] - self.shoulderWidth[LEFT][X]
+        self.shoulderWidth.append(length)
+
+    def measureSleeveLength(self):
+        self.sleeveLength.append(self.sleeveTop[LEFT])
+        self.sleeveLength.append(self.shoulderPoint[LEFT])
+        length = (np.int32)(math.sqrt((self.sleeveLength[RIGHT][X]-self.sleeveLength[LEFT][X])**2 + (self.sleeveLength[LEFT][Y]-self.sleeveLength[RIGHT][Y])**2) + 0.5) # if wanna convert to nearest int number, plus with 0.5
+        self.sleeveLength.append(length)
 
     def showHemWidth(self, img, point=True):
         '''Show Hem width of shirt'''

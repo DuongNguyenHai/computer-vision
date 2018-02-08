@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Test</title>
+    <title>Shirt measurement</title>
 
     <!-- JS -->
     <script type="text/javascript" src="script/socket.io/socket.io.js"></script>
@@ -14,6 +14,9 @@
     <script type="text/javascript" src="script/bootstrap/tether.min.js"></script> 
     <script type="text/javascript" src="script/bootstrap/bootstrap.min.js"></script>
 
+    <!-- opencv js -->
+    <script type="text/javascript" src="script/opencv.js"></script>
+    <!-- <script async src="script/opencv.js" onload="onOpenCvReady();" type="text/javascript"></script> -->
     <!-- my script -->
     <script type="text/javascript" src="script/script.js"></script>
 
@@ -54,8 +57,10 @@
                 <div class="camera">
                     <div class="camera-box">
                         <div class="camera-content">
-                            <!-- <img id="imageSrc" src="resource/images/shirt18.jpg" alt=""> -->
-                            <div id="imageSrc"></div>
+                            <div class="boundary">
+                                <img id="imageSrc" src="resource/images/shirt12.jpg" alt="">
+                                <canvas id="canvasOutput" ></canvas>
+                            </div>
                         </div>
                     </div>
                     <div class="user-action">
@@ -66,12 +71,6 @@
                             <div class="progress">
                                 <div class="progress-bar" role="progressbar"></div>
                             </div>
-                            
-                            <!-- <form ref='uploadForm' id='uploadForm' action='http://localhost:3000/upload' method='post' encType="multipart/form-data">
-                                <input type="file" id="fileInput" name="img" />
-                                <label for="fileInput" class="act-select choose-img">Choose image</label>
-                                <input type='submit' value='Upload!' />
-                            </form> -->
                         </div>
                         <div class="act-measure">
                             <button type="button" class="btn btn-primary action" action="measure">Measure</button>
@@ -105,7 +104,7 @@
                             <tbody>
                                 <tr class="propObject">
                                     <td class="tb-property-name" id="bodyLength">Body Length</td>
-                                    <td class="tb-property-value" length="bodyLength">NaN</td>
+                                    <td class="tb-property-value" length="bodyLength">NG</td>
                                     <td >
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
@@ -115,7 +114,7 @@
                                 </tr>
                                 <tr class="propObject">
                                     <td class="tb-property-name" id="chestWidth">Chest Width</td>
-                                    <td class="tb-property-value" length="chestWidth">NaN</td>
+                                    <td class="tb-property-value" length="chestWidth">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
@@ -123,29 +122,29 @@
                                         </label>
                                     </td>
                                 </tr>
-                                <!-- <tr class="propObject">
+                                <tr class="propObject">
                                     <td class="tb-property-name" id="shoulderWidth">Shoulder Width</td>
-                                    <td class="tb-property-value" length="shoulderWidth">NaN</td>
+                                    <td class="tb-property-value" length="shoulderWidth">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
                                         <span class="custom-control-indicator"></span>
                                         </label>
                                     </td>
-                                </tr> -->
-                                <!-- <tr class="propObject">
+                                </tr>
+                                <tr class="propObject">
                                     <td class="tb-property-name" id="sleeveLength">Sleeve Length</td>
-                                    <td class="tb-property-value" length="sleeveLength">NaN</td>
+                                    <td class="tb-property-value" length="sleeveLength">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
                                         <span class="custom-control-indicator"></span>
                                         </label>
                                     </td>
-                                </tr> -->
+                                </tr>
                                 <tr class="propObject">
                                     <td class="tb-property-name" id="armHole">Arm hole</td>
-                                    <td class="tb-property-value" length="armHoleLength">NaN</td>
+                                    <td class="tb-property-value" length="armHoleLength">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
@@ -153,19 +152,19 @@
                                         </label>
                                     </td>
                                 </tr>
-                                <!-- <tr class="propObject">
+                                <tr class="propObject">
                                     <td class="tb-property-name" id="sleeveWidth">Sleeve Width</td>
-                                    <td class="tb-property-value" length="sleeveWidth">NaN</td>
+                                    <td class="tb-property-value" length="sleeveWidth">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
                                         <span class="custom-control-indicator"></span>
                                         </label>
                                     </td>
-                                </tr> -->
+                                </tr>
                                 <tr class="propObject">
                                     <td class="tb-property-name" id="sleeveHemWidth">Sleeve Hem Width</td>
-                                    <td class="tb-property-value" length="sleeveHemWidth">NaN</td>
+                                    <td class="tb-property-value" length="sleeveHemWidth">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
@@ -173,19 +172,19 @@
                                         </label>
                                     </td>
                                 </tr>
-                                <!-- <tr class="propObject">
+                                <tr class="propObject">
                                     <td class="tb-property-name" id="sleeveHemFromWidth">Sleeve Hem From Width</td>
-                                    <td class="tb-property-value" length="sleeveHemFromWidth">NaN</td>
+                                    <td class="tb-property-value" length="sleeveHemFromWidth">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
                                         <span class="custom-control-indicator"></span>
                                         </label>
                                     </td>
-                                </tr> -->
+                                </tr>
                                 <tr class="propObject">
                                     <td class="tb-property-name" id="hemWidth">Hem Width</td>
-                                    <td class="tb-property-value" length="hemWidth">NaN</td>
+                                    <td class="tb-property-value" length="hemWidth">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
@@ -193,9 +192,9 @@
                                         </label>
                                     </td>
                                 </tr>
-                                <!-- <tr class="propObject">
+                                <tr class="propObject">
                                     <td class="tb-property-name" id="hemFromStitch">Hem From Stitch</td>
-                                    <td class="tb-property-value" length="hemFromStitch">NaN</td>
+                                    <td class="tb-property-value" length="hemFromStitch">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
@@ -205,7 +204,7 @@
                                 </tr>
                                 <tr class="propObject">
                                     <td class="tb-property-name" id="neckWidth">Neck Width</td>
-                                    <td class="tb-property-value" length="neckWidth">NaN</td>
+                                    <td class="tb-property-value" length="neckWidth">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
@@ -215,7 +214,7 @@
                                 </tr>
                                 <tr class="propObject">
                                     <td class="tb-property-name" id="frontNeckDepth">Front Neck Depth</td>
-                                    <td class="tb-property-value" length="frontNeckDepth">NaN</td>
+                                    <td class="tb-property-value" length="frontNeckDepth">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
@@ -225,7 +224,7 @@
                                 </tr>
                                 <tr class="propObject">
                                     <td class="tb-property-name" id="backNeckDepth">Back Neck Depth</td>
-                                    <td class="tb-property-value" length="backNeckDepth">NaN</td>
+                                    <td class="tb-property-value" length="backNeckDepth">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
@@ -235,7 +234,7 @@
                                 </tr>
                                 <tr class="propObject">
                                     <td class="tb-property-name" id="collarWidth">Collar Depth</td>
-                                    <td class="tb-property-value" length="collarWidth">NaN</td>
+                                    <td class="tb-property-value" length="collarWidth">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
@@ -245,14 +244,14 @@
                                 </tr>
                                 <tr class="propObject">
                                     <td class="tb-property-name" id="neckToSleeve">Neck To Sleeve</td>
-                                    <td class="tb-property-value" length="neckToSleeve">NaN</td>
+                                    <td class="tb-property-value" length="neckToSleeve">NG</td>
                                     <td>
                                         <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input">
                                         <span class="custom-control-indicator"></span>
                                         </label>
                                     </td>
-                                </tr> -->
+                                </tr>
                             </tbody>
                         </table>
                     </div>

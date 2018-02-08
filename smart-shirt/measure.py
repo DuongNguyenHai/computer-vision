@@ -34,27 +34,27 @@ def measureTShirt():
     print('sleeveBottom: ', shirt.sleeveBottom)
     print('arm hole: ', shirt.armHoleBottom)
 
-    img = cv.imread('uploads/shirt.jpg')
-    cv.drawContours(img, [shirt.outline], -1, (92, 239, 29), 1)
+    # img = cv.imread('uploads/shirt.jpg')
+    # cv.drawContours(img, [shirt.outline], -1, (92, 239, 29), 1)
 
     # draw point
 
-    cv.circle(img, shirt.collar[0], 4, (255, 0, 0), -1)
-    cv.circle(img, shirt.collar[1], 4, (255, 0, 0), -1)
+    # cv.circle(img, shirt.collar[0], 4, (255, 0, 0), -1)
+    # cv.circle(img, shirt.collar[1], 4, (255, 0, 0), -1)
 
     # show center of shirt
 
-    shirt.printCenter(img, shirt.outline)
+    # shirt.printCenter(img, shirt.outline)
 
     # show measurement
 
-    shirt.showBodyLength(img)
-    shirt.showChestWidth(img)
-    shirt.showSleeveHemWidth(img)
-    shirt.showArmHoleLength(img)
-    shirt.showHemWidth(img)
-    cv.imshow('image', img)
-    cv.waitKey(0)
+    # shirt.showBodyLength(img)
+    # shirt.showChestWidth(img)
+    # shirt.showSleeveHemWidth(img)
+    # shirt.showArmHoleLength(img)
+    # shirt.showHemWidth(img)
+    # cv.imshow('image', img)
+    # cv.waitKey(0)
     cv.destroyAllWindows()
     return shirt.returnPoints()
 
@@ -73,6 +73,7 @@ def main():
                 # Load t-shirt img from specify folder and measure size of it, respond it to nodejs
                 if(act=='measure'):
                     dct = measureTShirt()
+                    # print('print from outside center: ', shirt.ct)
                     dct['type'] = 'measurement'
                     dataStr = json.dumps(dct)
                     print("respond points of shirt: ", dataStr)
